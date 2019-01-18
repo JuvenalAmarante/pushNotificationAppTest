@@ -7,23 +7,40 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import PushNotification from 'react-native-push-notification'
+
 
 type Props = {};
 export default class App extends Component<Props> {
+  componentWillMount = () => {
+    PushNotification.configure({
+      onNotification: function(notification) {
+        console.log( 'NOTIFICATION:', notification );
+      }
+    })
+  }
+
+  notification = () => {
+    PushNotification.localNotification({
+      vibrate: 300,
+      title: 'Testando',
+      message: 'Tá funcionando?',
+      bigText: 'Ótimo...',
+      subText: 'Pode ver?'
+    })
+  }
+  
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <Text style={styles.welcome}>Bem vindo ao Push Notification</Text>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          this.notification();
+        }}>
+        <Text style={styles.instructions}>Aperte para exibir uma notificação</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -45,5 +62,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  }, 
+  button: {
+    backgroundColor: '#E5ECEE',
+    padding: 15,
+    borderRadius: 15,
   },
 });
