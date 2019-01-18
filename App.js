@@ -9,11 +9,17 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
-import PushNotification from 'react-native-push-notification'
+import PushNotification from 'react-native-push-notification';
+import OneSignal from 'react-native-onesignal'
 
 
 type Props = {};
 export default class App extends Component<Props> {
+  constructor(props) {
+    super(props);
+    OneSignal.init("1fe3def1-d66b-4b29-bd49-f32e6ce26b8d");
+  }
+  
   componentWillMount = () => {
     PushNotification.configure({
       onNotification: function(notification) {
